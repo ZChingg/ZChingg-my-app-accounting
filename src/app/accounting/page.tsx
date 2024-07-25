@@ -1,6 +1,6 @@
 "use client";
-import Form from "./accounting/form";
-import List from "./accounting/list";
+import Form from "./form";
+import List from "./list";
 import { useState } from "react";
 
 export default function Accounting() {
