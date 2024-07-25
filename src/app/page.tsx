@@ -1,95 +1,62 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import Form from "@/components/form";
+import List from "@/components/list";
+import { useState } from "react";
 
-export default function Home() {
+export default function Accounting() {
+  const [records, setRecords] = useState([
+    {
+      id: Math.random(),
+      amount: -1200,
+      description: "吃大餐",
+      type: "expense",
+    },
+    {
+      id: Math.random(),
+      amount: -500,
+      description: "咖啡十杯",
+      type: "expense",
+    },
+    {
+      id: Math.random(),
+      amount: -200,
+      description: "生活用品",
+      type: "expense",
+    },
+    {
+      id: Math.random(),
+      amount: 50000,
+      description: "十月份薪資",
+      type: "income",
+    },
+  ]);
+
+  // 新增花費
+  const handleAdd = (amount: number, description: string, type: string) => {
+    setRecords([
+      ...records,
+      {
+        id: Math.random(),
+        amount: type === "income" ? amount : -amount,
+        description,
+        type,
+      },
+    ]);
+  };
+
+  // 刪除花費，以 filter 過濾並回傳新陣列
+  const handleDelete = (id: number) => {
+    setRecords(
+      records.filter((record) => {
+        return record.id !== id;
+      })
+    );
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <>
+      <Form handleAdd={handleAdd} />
+      <List records={records} handleDelete={handleDelete} />
+    </>
   );
 }
