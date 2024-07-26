@@ -1,24 +1,25 @@
 "use client";
 import { useState } from "react";
+import styles from "./page.module.css";
 
 interface FormProps {
   handleAdd: (amount: number, description: string, type: string) => void;
 }
 
 export default function Form({ handleAdd }: FormProps) {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("0");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("income");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleAdd(Number(amount), description, type);
-    setAmount("");
+    setAmount("0");
     setDescription("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="income">收入</option>
         <option value="expense">支出</option>
@@ -31,7 +32,7 @@ export default function Form({ handleAdd }: FormProps) {
       />
       <input
         type="text"
-        placeholder="描述"
+        placeholder="說明"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />

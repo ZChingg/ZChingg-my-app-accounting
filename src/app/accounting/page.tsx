@@ -1,7 +1,8 @@
 "use client";
-import Form from "./form";
-import List from "./list";
+import Form from "./components/form";
+import List from "./components/list";
 import { useState } from "react";
+import styles from "./components/page.module.css";
 
 export default function Accounting() {
   const [records, setRecords] = useState([
@@ -54,9 +55,9 @@ export default function Accounting() {
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <Form handleAdd={handleAdd} />
       <List records={records} handleDelete={handleDelete} />
-    </>
+    </div>
   );
 }

@@ -1,62 +1,18 @@
-"use client";
-import Form from "./accounting/form";
-import List from "./accounting/list";
-import { useState } from "react";
+import Link from "next/link";
+import styles from "./page.module.css";
 
-export default function Accounting() {
-  const [records, setRecords] = useState([
-    {
-      id: Math.random(),
-      amount: -1200,
-      description: "吃大餐",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: -500,
-      description: "咖啡十杯",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: -200,
-      description: "生活用品",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: 50000,
-      description: "十月份薪資",
-      type: "income",
-    },
-  ]);
-
-  // 新增花費
-  const handleAdd = (amount: number, description: string, type: string) => {
-    setRecords([
-      ...records,
-      {
-        id: Math.random(),
-        amount: type === "income" ? amount : -amount,
-        description,
-        type,
-      },
-    ]);
-  };
-
-  // 刪除花費，以 filter 過濾並回傳新陣列
-  const handleDelete = (id: number) => {
-    setRecords(
-      records.filter((record) => {
-        return record.id !== id;
-      })
-    );
-  };
-
+export default function Page() {
   return (
-    <>
-      <Form handleAdd={handleAdd} />
-      <List records={records} handleDelete={handleDelete} />
-    </>
+    <div className={styles.wrapper}>
+      <div className={styles.title}>React 練習專案</div>
+      <div className={styles.description}>
+        歡迎光臨我的頁面
+        <div>
+          <Link href="/accounting">
+            <button className={styles.redirect}>點此開始</button>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }
