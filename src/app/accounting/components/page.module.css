@@ -33,6 +33,7 @@
   background: #eff3f5;
   padding-left: 10px;
   margin-left: 5px;
+  border-radius: 0;
 }
 .form > button {
   background: #f8b54f;
