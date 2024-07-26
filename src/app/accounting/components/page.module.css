@@ -1,6 +1,7 @@
 .wrapper {
-  width: 700px;
+  max-width: 700px;
   padding: 30px;
+  width: calc(100% - 40px);
   background-color: #4fa7b3;
   border-radius: 5px;
   margin: auto;
@@ -24,8 +25,9 @@
 }
 .form > select {
   background: #eff3f5;
-  width: 150px;
+  width: 50px;
   border-radius: 5px 0px 0px 5px;
+  flex-shrink: 0;
 }
 .form > input {
   background: #eff3f5;
@@ -35,8 +37,9 @@
 .form > button {
   background: #f8b54f;
   color: white;
-  width: 200px;
+  width: 70px;
   border-radius: 0px 5px 5px 0px;
+  flex-shrink: 0;
 }
 .form > button:hover {
   background: #eaab4b;
@@ -61,7 +64,7 @@
   cursor: pointer;
   background: #f8b54f;
   color: white;
-  width: 75px;
+  width: 70px;
   border-radius: 0 5px 5px 0;
 }
 .record > button:hover {
