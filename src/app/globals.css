@@ -23,6 +23,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+hr {
+  color: white;
+}
 
 @media (prefers-color-scheme: dark) {
   html {

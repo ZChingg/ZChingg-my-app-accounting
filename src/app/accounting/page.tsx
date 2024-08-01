@@ -1,8 +1,8 @@
 "use client";
-import Form from "./components/form";
-import List from "./components/list";
+import Form from "@/components/form";
+import List from "@/components/list";
 import { useState } from "react";
-import styles from "./components/page.module.css";
+import styles from "@/styles/page.module.css";
 
 export default function Accounting() {
   const [records, setRecords] = useState([

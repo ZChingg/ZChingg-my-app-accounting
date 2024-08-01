@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "./page.module.css";
+import styles from "@/styles/page.module.css";
 
 interface FormProps {
   handleAdd: (amount: number, description: string, type: string) => void;
