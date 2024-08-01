@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "@/styles/page.module.css";
+import styles from "@/styles/accounting.module.css";
 
 interface FormProps {
   handleAdd: (amount: number, description: string, type: string) => void;
@@ -21,22 +21,22 @@ export default function Form({ handleAdd }: FormProps) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="income">收入</option>
-        <option value="expense">支出</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
       </select>
       <input
         type="number"
-        placeholder="金額"
+        placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
       <input
         type="text"
-        placeholder="說明"
+        placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <button type="submit">新增紀錄</button>
+      <button type="submit">Add</button>
     </form>
   );
 }

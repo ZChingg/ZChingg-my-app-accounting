@@ -1,15 +1,14 @@
 "use client";
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import showNotify from "@/components/shownotify";
 import { auth, db } from "@/utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  User,
-  updateProfile,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -19,19 +18,49 @@ export default function Page() {
   const [signinEmail, setSigninEmail] = useState("");
   const [signinPassword, setSigninPassword] = useState("");
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any>(null);
+
+  // 監聽登入狀態
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        setIsSignedIn(true);
+      } else {
+        setUser(null);
+        setIsSignedIn(false);
+      }
+    });
+    return () => unsubscribe(); 
+  }, []);
 
   // 註冊
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    createUserWithEmailAndPassword(auth, createEmail, createPassword)
-      .then((userCredential) => {
-        showNotify("success", "Success!");
-      })
-      .catch((error) => {
-        console.log(error.message);
-        showNotify("error", `Error! ${extractedMessage(error.message)}`);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        createEmail,
+        createPassword
+      );
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        uid: user.uid,
       });
+
+      setCreateEmail("");
+      setCreatePassword("");
+      showNotify("success", "Success!");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // console.log(error.message);
+        showNotify("error", "Error! " + error.message);
+      } else {
+        showNotify("error", "An unknown error occurred");
+      }
+    }
   };
 
   // 登入
@@ -45,16 +74,9 @@ export default function Page() {
         showNotify("success", "Success!");
       })
       .catch((error) => {
-        console.log(error.message);
-        showNotify("error", `Error! ${extractedMessage(error.message)}`);
+        // console.log(error.message);
+        showNotify("error", "Error! " + error.message);
       });
-  };
-
-  // 錯誤訊息處理 // TODO
-  const extractedMessage = (errorMessage: string) => {
-    return errorMessage
-      .substring(errorMessage.indexOf(":") + 1, errorMessage.indexOf("("))
-      .trim();
   };
 
   return (
@@ -85,7 +107,10 @@ export default function Page() {
           </form>
         ) : (
           <>
-            <p>Hi {user?.email},<br />Welcome to Money Manager!</p>
+            <p>
+              Hi {user?.email},<br />
+              Welcome to Money Manager!
+            </p>
             <div>
               <Link href="/accounting">
                 <button className={styles.redirect}>Get Started</button>

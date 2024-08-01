@@ -9,6 +9,9 @@
   text-align: center;
   border-radius: 5px;
 }
+.wrapper p{
+  color: white;
+}
 .form {
   height: 40px;
   margin: 20px 0px;
@@ -25,7 +28,7 @@
 }
 .form > select {
   background: #eff3f5;
-  width: 50px;
+  width: 70px;
   border-radius: 5px 0px 0px 5px;
   flex-shrink: 0;
 }
@@ -74,12 +77,12 @@
 .redirect {
   outline: none;
   border: none;
-  height: 40px;
   cursor: pointer;
   background: #f8b54f;
   color: white;
-  width: 75px;
+  padding: 10px;
   border-radius: 5px;
+  margin: 10px;
 }
 .redirect:hover {
   background: #eaab4b;

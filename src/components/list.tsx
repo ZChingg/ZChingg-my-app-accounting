@@ -1,8 +1,8 @@
 import Link from "next/link";
-import styles from "@/styles/page.module.css";
+import styles from "@/styles/accounting.module.css";
 
 interface RecordItem {
-  id: number;
+  id: string;
   amount: number;
   description: string;
   type: string;
@@ -10,7 +10,7 @@ interface RecordItem {
 
 interface ListProps {
   records: RecordItem[];
-  handleDelete: (id: number) => void;
+  handleDelete: (id: string) => void;
 }
 
 export default function List({ records, handleDelete }: ListProps) {
@@ -35,13 +35,13 @@ export default function List({ records, handleDelete }: ListProps) {
               </div>
               <div>{record.description}</div>
             </div>
-            <button onClick={() => handleDelete(record.id)}>刪除</button>
+            <button onClick={() => handleDelete(record.id)}>Delete</button>
           </div>
         ))}
       </ul>
-      <p style={{ margin: "20px 0", color: "white" }}>小計：{subtotal}</p>
+      <p style={{ margin: "20px 0", color: "white" }}>Total：{subtotal}</p>
       <Link href="/">
-        <button className={styles.redirect}>返回首頁</button>
+        <button className={styles.redirect}>Homepage</button>
       </Link>
     </>
   );

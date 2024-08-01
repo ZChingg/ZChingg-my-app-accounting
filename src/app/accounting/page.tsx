@@ -1,61 +1,88 @@
 "use client";
 import Form from "@/components/form";
 import List from "@/components/list";
-import { useState } from "react";
-import styles from "@/styles/page.module.css";
+import { useState, useEffect } from "react";
+import styles from "@/styles/accounting.module.css";
+import { auth, db } from "@/utils/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 export default function Accounting() {
-  const [records, setRecords] = useState([
-    {
-      id: Math.random(),
-      amount: -1200,
-      description: "吃大餐",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: -500,
-      description: "咖啡十杯",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: -200,
-      description: "生活用品",
-      type: "expense",
-    },
-    {
-      id: Math.random(),
-      amount: 50000,
-      description: "十月份薪資",
-      type: "income",
-    },
-  ]);
+  const [records, setRecords] = useState<any[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const router = useRouter();
+
+  // 監聽登入狀態
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        fetchRecords(user.uid);
+      } else {
+        router.push("/");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 獲取花費
+  const fetchRecords = (uid: string) => {
+    const q = query(collection(db, "records"), where("uid", "==", uid));
+    onSnapshot(q, (querySnapshot) => {
+      const recordsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRecords(recordsData);
+    });
+  };
 
   // 新增花費
-  const handleAdd = (amount: number, description: string, type: string) => {
-    setRecords([
-      ...records,
-      {
-        id: Math.random(),
+  const handleAdd = async (
+    amount: number,
+    description: string,
+    type: string
+  ) => {
+    if (user) {
+      await addDoc(collection(db, "records"), {
         amount: type === "income" ? amount : -amount,
         description,
         type,
-      },
-    ]);
+        uid: user.uid,
+        timestamp: new Date(),
+      });
+    }
   };
 
-  // 刪除花費，以 filter 過濾並回傳新陣列
-  const handleDelete = (id: number) => {
-    setRecords(
-      records.filter((record) => {
-        return record.id !== id;
-      })
-    );
+  // 刪除花費
+  const handleDelete = async (id: string) => {
+    await deleteDoc(doc(db, "records", id));
+  };
+
+  // 登出系統
+  const handleLogOut = () => {
+    auth.signOut();
+    router.push("/");
   };
 
   return (
     <div className={styles.wrapper}>
+      <p>
+        Hi {user?.email},<br />
+        Welcome to Money Manager!
+      </p>
+      <button className={styles.redirect} onClick={handleLogOut}>
+        Log Out
+      </button>
       <Form handleAdd={handleAdd} />
       <List records={records} handleDelete={handleDelete} />
     </div>
