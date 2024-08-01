@@ -9,7 +9,7 @@
   text-align: center;
   border-radius: 5px;
 }
-.wrapper p{
+.wrapper p {
   color: white;
 }
 .form {
@@ -28,7 +28,7 @@
 }
 .form > select {
   background: #eff3f5;
-  width: 70px;
+  width: 80px;
   border-radius: 5px 0px 0px 5px;
   flex-shrink: 0;
 }

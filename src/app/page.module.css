@@ -38,7 +38,8 @@
   height: 30px;
   width: 200px;
 }
-.description form > button, .redirect {
+.description form > button,
+.redirect {
   outline: none;
   border: none;
   cursor: pointer;
@@ -48,10 +49,11 @@
   margin: 10px 0 20px 0;
   padding: 10px 10px;
 }
-.description form > button:hover, .redirect:hover {
+.description form > button:hover,
+.redirect:hover {
   background: #eaab4b;
 }
-.alert{
+.alert {
   margin-top: 10px;
 }
 

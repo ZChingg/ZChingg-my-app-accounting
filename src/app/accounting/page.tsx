@@ -13,6 +13,7 @@ import {
   onSnapshot,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
@@ -36,7 +37,11 @@ export default function Accounting() {
 
   // 獲取花費
   const fetchRecords = (uid: string) => {
-    const q = query(collection(db, "records"), where("uid", "==", uid));
+    const q = query(
+      collection(db, "records"),
+      where("uid", "==", uid),
+      orderBy("timestamp", "desc")
+    );
     onSnapshot(q, (querySnapshot) => {
       const recordsData = querySnapshot.docs.map((doc) => ({
         id: doc.id,

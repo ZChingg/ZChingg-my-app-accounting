@@ -31,7 +31,7 @@ export default function Page() {
         setIsSignedIn(false);
       }
     });
-    return () => unsubscribe(); 
+    return () => unsubscribe();
   }, []);
 
   // 註冊
@@ -40,7 +40,7 @@ export default function Page() {
     try {
       setCreateEmail("");
       setCreatePassword("");
-      
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         createEmail,
