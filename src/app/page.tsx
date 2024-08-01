@@ -38,21 +38,21 @@ export default function Page() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setCreateEmail("");
+      setCreatePassword("");
+      
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         createEmail,
         createPassword
       );
       const user = userCredential.user;
+      showNotify("success", "Success!");
 
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         uid: user.uid,
       });
-
-      setCreateEmail("");
-      setCreatePassword("");
-      showNotify("success", "Success!");
     } catch (error: unknown) {
       if (error instanceof Error) {
         // console.log(error.message);
